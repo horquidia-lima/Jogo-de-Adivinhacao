@@ -1,7 +1,12 @@
+import styles from "./app.module.css"
+import { Header } from "./components/Header"
+
 export default function App() {
     return (
-        <div>
-            <h1>React + TypeScript + Vite</h1>
+        <div className={styles.container}>
+            <main>
+                <Header />
+            </main>  
         </div>
     )
 }
