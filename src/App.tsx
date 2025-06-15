@@ -6,15 +6,35 @@ import { Letter } from "./components/Letter"
 import { LetterUsed } from "./components/LettersUsed"
 import { Tip } from "./components/Tip"
 
+import {WORDS} from "./utils/words"
+import type { Challenge } from "./utils/words"
+import { useState, useEffect } from "react"
+
 export default function App() {
+    const [atempts, setAttempts] = useState(0)
+    const [letters, setLetters] = useState("")
+    const [challenge, setChallenge] = useState<Challenge | null>(null)
     function handleRestartGame(){
         alert("Recomeçar o jogo")
     }
 
+    function startGame(){
+        const index = Math.floor(Math.random() * WORDS.length)
+        const randomWord = WORDS[index]
+        setChallenge(randomWord)
+
+        setAttempts(0)
+        setLetters("")
+    }
+
+    useEffect(() => {
+        startGame()
+    }, [])
+
     return (
         <div className={styles.container}>
             <main>
-                <Header current={5} max={10} onRestart={handleRestartGame}/>
+                <Header current={atempts} max={10} onRestart={handleRestartGame}/>
                 <Tip tip="Biblioteca para criar interfaces Web com Javascript."/>
                 <div className={styles.word}>
                     <Letter value="R"/>
