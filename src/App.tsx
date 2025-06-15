@@ -4,6 +4,7 @@ import { Header } from "./components/Header"
 import { Input } from "./components/Input"
 import { Letter } from "./components/Letter"
 import { LetterUsed } from "./components/LettersUsed"
+import type { LetterUsedProps } from "./components/LettersUsed"
 import { Tip } from "./components/Tip"
 
 import {WORDS} from "./utils/words"
@@ -11,6 +12,7 @@ import type { Challenge } from "./utils/words"
 import { useState, useEffect } from "react"
 
 export default function App() {
+    const [lettersUsed, setLettersUsed] = useState<LetterUsedProps[]>([])
     const [atempts, setAttempts] = useState(0)
     const [letters, setLetters] = useState("")
     const [challenge, setChallenge] = useState<Challenge | null>(null)
@@ -51,7 +53,7 @@ export default function App() {
                     <Button title="Confirmar"/>
                 </div>
 
-                <LetterUsed/>
+                <LetterUsed data={lettersUsed}/>
             </main>  
         </div>
     )
