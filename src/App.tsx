@@ -12,6 +12,7 @@ import type { Challenge } from "./utils/words"
 import { useState, useEffect } from "react"
 
 export default function App() {
+    const [score, setScore] = useState(0)
     const [lettersUsed, setLettersUsed] = useState<LetterUsedProps[]>([])
     const [atempts, setAttempts] = useState(0)
     const [letters, setLetters] = useState("")
@@ -45,8 +46,16 @@ export default function App() {
             return alert("Voce já utilizou a letra: " + value)
         }
 
-        setLettersUsed((prevState) => [...prevState])
+        const hits = challenge.word
+            .toLowerCase()
+            .split("")
+            .filter((char) => char === value).length
 
+        const correct = hits > 0
+        const currentScore = score + hits
+
+        setLettersUsed((prevState) => [...prevState, {value, correct}])
+        setScore(currentScore)
         setLetters("")
     }
 
@@ -62,7 +71,7 @@ export default function App() {
         <div className={styles.container}>
             <main>
                 <Header current={atempts} max={10} onRestart={handleRestartGame}/>
-                <Tip tip="Biblioteca para criar interfaces Web com Javascript."/>
+                <Tip tip={challenge.tip}/>
                 <div className={styles.word}>
                     {challenge.word.split("").map(()=> (
                         <Letter value=""/>
