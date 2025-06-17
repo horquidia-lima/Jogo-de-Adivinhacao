@@ -19,12 +19,17 @@ export default function App() {
     const [letter, setLetter] = useState("")
     const [challenge, setChallenge] = useState<Challenge | null>(null)
     function handleRestartGame(){
-        alert("Recomeçar o jogo")
+        const isConfirmed = window.confirm("Deseja realmente reiniciar o jogo?")
+
+        if(isConfirmed){
+            startGame()
+        }
     }
 
     function startGame(){
         const index = Math.floor(Math.random() * WORDS.length)
         const randomWord = WORDS[index]
+
         setChallenge(randomWord)
 
         setScore(0)
@@ -38,11 +43,13 @@ export default function App() {
         }
 
         if(!letter.trim()){
-            alert("Informe uma letra")
+            return alert("Informe uma letra")
         }
         
-        const value = letter.toLowerCase()
-        const exists = lettersUsed.find((used) => used.value.toUpperCase() === value)
+        const value = letter.toUpperCase()
+        const exists = lettersUsed.find(
+            (used) => used.value.toUpperCase() === value
+        )
 
         if(exists){
             setLetter("")

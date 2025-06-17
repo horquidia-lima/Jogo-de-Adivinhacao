@@ -16,8 +16,13 @@ export function LetterUsed({data}: Props){
             <h5>Letras utilizadas</h5>
 
             <div>
-                {data.map(({value, correct}) => (
-                    <Letter key={value} value={value} size="small" color={correct ? "correct" : "wrong"}/>
+                {data.map(({value, correct}, index) => (
+                    <Letter 
+                        key={index} 
+                        value={value} 
+                        size="small" 
+                        color={correct ? "correct" : "wrong"}
+                    />
                 ))}
             </div>
         </div>
