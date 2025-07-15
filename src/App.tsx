@@ -18,19 +18,30 @@ export default function App() {
     const [lettersUsed, setLettersUsed] = useState<LetterUsedProps[]>([])
     const [letter, setLetter] = useState("")
     const [challenge, setChallenge] = useState<Challenge | null>(null)
+    const [shake, setShake] = useState(false)                                  
     function handleRestartGame(){
         const isConfirmed = window.confirm("Deseja realmente reiniciar o jogo?")
 
         if(isConfirmed){
             startGame()
+
+            setTimeout(() => {
+                setShake(false)
+            }, 300)
         }
     }
 
     function startGame(){
+        console.log("🚀 Iniciando jogo...")
+
         const index = Math.floor(Math.random() * WORDS.length)
         const randomWord = WORDS[index]
 
+        console.log("🎲 Palavra sorteada:", randomWord)
+    
         setChallenge(randomWord)
+
+         console.log("✅ Challenge definido!", challenge)
 
         setScore(0)
         setLetter("")
@@ -56,17 +67,22 @@ export default function App() {
             return alert("Voce já utilizou a letra: " + value)
         }
 
+        
         const hits = challenge.word
-            .toLowerCase()
+            .toUpperCase()
             .split("")
             .filter((char) => char === value).length
-
+        
         const correct = hits > 0
         const currentScore = score + hits
 
         setLettersUsed((prevState) => [...prevState, {value, correct}])
         setScore(currentScore)
         setLetter("")
+
+        if(!correct){
+            setShake(true)
+        }
     }
 
     function endGame(message: string){
@@ -105,7 +121,7 @@ export default function App() {
                 <Header current={lettersUsed.length} max={challenge.word.length + ATTEMPTS_MARGIN} onRestart={handleRestartGame}/>
                 <Tip tip={challenge.tip}/>
 
-                <div className={styles.word}>
+                <div className={`${styles.word} ${ shake && styles.shake}`}>
                     {challenge.word.split("").map((letter,index)=> {
                         const letterUsed = lettersUsed.find(
                             (used) => used.value.toUpperCase() === letter.toUpperCase()
